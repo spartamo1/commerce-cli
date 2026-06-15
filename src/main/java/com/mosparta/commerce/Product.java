@@ -1,9 +1,9 @@
 package com.mosparta.commerce;
 
 public class Product {
-    private String name;
-    private Integer price;
-    private String description;
+    private final String name;
+    private final Integer price;
+    private final String description;
     private Integer stock;
 
     public Product(String name, Integer price, String description, Integer stock) {
@@ -11,22 +11,6 @@ public class Product {
         this.price = price;
         this.description = description;
         this.stock = stock;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public Integer getPrice() {
-        return price;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public Integer getStock() {
-        return stock;
     }
 
     @Override

@@ -1,12 +1,11 @@
 package com.mosparta.commerce;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 public class CommerceSystem {
 
-    private List<Category> categoryList;
+    private final List<Category> categoryList;
 
     public CommerceSystem(List<Category> categoryList) {
         this.categoryList = categoryList;
