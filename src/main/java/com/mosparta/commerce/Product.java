@@ -24,4 +24,17 @@ public class Product {
     public String getDescription() {
         return description;
     }
+
+    public Integer getStock() {
+        return stock;
+    }
+
+    @Override
+    public String toString() {
+        return "%-15s |%,10d원 | %s | 재고: %s개".formatted(name, price, description, stock);
+    }
+
+    public String toSummaryString() {
+        return "%-15s |%,10d원 | %s".formatted(name, price, description);
+    }
 }
