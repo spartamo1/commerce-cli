@@ -1,5 +1,7 @@
 package com.mosparta.commerce;
 
+import java.util.Objects;
+
 public class Product {
     private final String name;
     private final Integer price;
@@ -13,6 +15,28 @@ public class Product {
         this.stock = stock;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public Integer getPrice() {
+        return price;
+    }
+
+    public boolean isInStock(Integer count) {
+        return count <= stock;
+    }
+
+    public void buy(Integer count) {
+        if (count > stock) {
+            throw new IllegalStateException("재고가 부족합니다.");
+        }
+
+        Integer prevStock = this.stock;
+        stock -= count;
+        System.out.printf("%s 재고가 %d개 -> %d개로 업데이트되었습니다.\n", name, prevStock, stock);
+    }
+
     @Override
     public String toString() {
         return "%-15s |%,10d원 | %s | 재고: %s개".formatted(name, price, description, stock);
@@ -20,5 +44,16 @@ public class Product {
 
     public String toSummaryString() {
         return "%-15s |%,10d원 | %s".formatted(name, price, description);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof Product product)) return false;
+        return name.equals(product.name) && price.equals(product.price) && description.equals(product.description);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, price, description);
     }
 }
