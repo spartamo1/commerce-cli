@@ -23,6 +23,14 @@ public class Product {
         return price;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public Integer getStock() {
+        return stock;
+    }
+
     public boolean isInStock(Integer count) {
         return count <= stock;
     }

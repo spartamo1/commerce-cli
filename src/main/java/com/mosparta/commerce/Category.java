@@ -1,6 +1,7 @@
 package com.mosparta.commerce;
 
 import java.util.List;
+import java.util.Optional;
 
 public class Category {
     private final String name;
@@ -17,5 +18,19 @@ public class Category {
 
     public List<Product> getProducts() {
         return List.copyOf(products);
+    }
+
+    public Optional<Product> findProductByName(String name) {
+        return products.stream()
+                .filter(product -> product.getName().equals(name))
+                .findFirst();
+    }
+
+    public void addProduct(Product product) {
+        products.add(product);
+    }
+
+    public void deleteProduct(Product product) {
+        products.remove(product);
     }
 }
