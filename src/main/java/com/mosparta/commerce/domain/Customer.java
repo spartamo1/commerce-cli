@@ -1,4 +1,4 @@
-package com.mosparta.commerce;
+package com.mosparta.commerce.domain;
 
 public class Customer {
     private String name;

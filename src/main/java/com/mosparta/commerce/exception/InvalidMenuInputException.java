@@ -1,4 +1,4 @@
-package com.mosparta.commerce.exceptions;
+package com.mosparta.commerce.exception;
 
 public class InvalidMenuInputException extends RuntimeException {
 

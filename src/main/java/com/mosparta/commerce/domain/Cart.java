@@ -1,4 +1,4 @@
-package com.mosparta.commerce;
+package com.mosparta.commerce.domain;
 
 import java.util.HashMap;
 import java.util.Map;

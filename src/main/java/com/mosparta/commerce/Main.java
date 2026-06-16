@@ -1,5 +1,8 @@
 package com.mosparta.commerce;
 
+import com.mosparta.commerce.domain.Category;
+import com.mosparta.commerce.domain.Product;
+
 import java.util.ArrayList;
 import java.util.List;
 
