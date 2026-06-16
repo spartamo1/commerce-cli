@@ -15,6 +15,58 @@ public class CommerceSystem {
         this.cart = new Cart();
     }
 
+    private boolean handleCategoryView(Scanner sc, Category category) {
+        printProductList(category);
+        int num = Integer.parseInt(sc.next());
+
+        List<Product> products = category.getProducts();
+
+        int maxNum = products.size();
+        if (num < 0 || num > maxNum)
+            throw new InvalidMenuInputException(num, 0, maxNum);
+
+        if (num == 0)
+            return false;
+
+        Product selectedProduct = products.get(num-1);
+        System.out.print("선택한 상품: ");
+        System.out.println(selectedProduct + "\n");
+
+        System.out.println("위 상품을 장바구니에 추가하시겠습니까?\n1. 확인\t2.취소");
+        num = Integer.parseInt(sc.next());
+
+        if (num == 2) return true;
+        if (num != 1) throw new InvalidMenuInputException(num, 1, 2);
+
+        cart.addOneProduct(selectedProduct);
+        System.out.println(selectedProduct.getName() + "가 장바구니에 추가되었습니다.");
+        return true;
+    }
+
+    private void handleCartOrder(Scanner sc) {
+        System.out.println(cart);
+        System.out.println("\n1. 주문 확정\t 2. 메인으로 돌아가기");
+
+        int num = Integer.parseInt(sc.next());
+
+        if (num == 1) {
+            if (!cart.isAllInStock()) {
+                System.out.println("재고가 부족한 상품이 존재합니다");
+                return;
+            }
+            System.out.println("주문이 완료되었습니다! 총 금액: " + String.format("%,d", cart.getTotalPrice()) + "원");
+            cart.buy();
+            System.out.println("\n\n");
+        } else if (num != 2) {
+            throw new InvalidMenuInputException(num, 1, 2);
+        }
+    }
+
+    private void handleCancelOrder() {
+        cart.clear();
+        System.out.println("주문 취소되었습니다");
+    }
+
     private void printCategories() {
         System.out.println("[ 실시간 커머스 플랫폼 메인 ]");
         for (int i=0; i<categoryList.size(); i++) {
@@ -60,68 +112,18 @@ public class CommerceSystem {
                     return;
 
                 if (num == categoryList.size()+1) {
-                    // 장바구니 확인 로직
-                    System.out.println(cart);
-                    System.out.println("\n1. 주문 확정\t 2. 메인으로 돌아가기");
-
-                    num = Integer.parseInt(sc.next());
-
-                    if (num == 1) {
-                        if (!cart.isAllInStock()) {
-                            System.out.println("재고가 부족한 상품이 존재합니다");
-                            continue;
-                        }
-
-                        System.out.println("주문이 완료되었습니다! 총 금액: " + String.format("%,d", cart.getTotalPrice()) + "원");
-                        cart.buy();
-                        System.out.println("\n\n"); // 개행
-                    } else if (num == 2) {
-                        continue;
-                    } else {
-                        throw new InvalidMenuInputException(num, 1, 2);
-                    }
-
+                    handleCartOrder(sc);
                     continue;
                 }
 
                 if (num == categoryList.size()+2) {
-                    // 주문 취소 로직
-                    cart.clear();
-                    System.out.println("주문 취소되었습니다");
+                    handleCancelOrder();
                     continue;
                 }
 
-                // 상품 선택
                 Category selectedCategory = categoryList.get(num-1);
-                printProductList(selectedCategory);
-                num = Integer.parseInt(sc.next());
-
-                List<Product> selectedCategoryProducts = selectedCategory.getProducts();
-
-                // 범위 검증
-                maxNum = selectedCategoryProducts.size();
-                if (num < 0 || num > maxNum)
-                    throw new InvalidMenuInputException(num, 0, maxNum);
-
-                if (num == 0)
+                if (!handleCategoryView(sc, selectedCategory))
                     return;
-
-                // 장바구니 담기
-                Product selectedProduct = selectedCategoryProducts.get(num-1);
-                System.out.print("선택한 상품: ");
-                System.out.println(selectedProduct + "\n");
-
-                System.out.println(
-                        "위 상품을 장바구니에 추가하시겠습니까?\n" +
-                                "1. 확인\t2.취소"
-                );
-                num = Integer.parseInt(sc.next());
-
-                if (num == 2) continue;
-                if (num != 1) throw new InvalidMenuInputException(num, 1, 2);
-
-                cart.addOneProduct(selectedProduct);
-                System.out.println(selectedProduct.getName() + "가 장바구니에 추가되었습니다.");
             } catch (InvalidMenuInputException | IllegalStateException e) {
                 System.out.println(e.getMessage());
             } catch (NumberFormatException e) {
