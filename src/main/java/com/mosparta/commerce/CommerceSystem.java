@@ -2,6 +2,8 @@ package com.mosparta.commerce;
 
 import com.mosparta.commerce.domain.Cart;
 import com.mosparta.commerce.domain.Category;
+import com.mosparta.commerce.domain.Customer;
+import com.mosparta.commerce.domain.CustomerGradeEnum;
 import com.mosparta.commerce.domain.Product;
 import com.mosparta.commerce.exception.InvalidMenuInputException;
 import com.mosparta.commerce.handler.AdminModeHandler;
@@ -15,13 +17,15 @@ public class CommerceSystem {
 
     private final List<Category> categoryList;
     private final Cart cart;
-    private final Scanner sc = new Scanner(System.in);
     private final AdminModeHandler adminModeHandler;
+    private final Customer customer;
+    private final Scanner sc = new Scanner(System.in);
 
-    public CommerceSystem(List<Category> categoryList, Cart cart) {
+    public CommerceSystem(List<Category> categoryList, Cart cart, Customer customer) {
         this.categoryList = categoryList;
         this.cart = cart;
         this.adminModeHandler = new AdminModeHandler(sc, categoryList, cart);
+        this.customer = customer;
     }
 
     /**
@@ -65,11 +69,36 @@ public class CommerceSystem {
         int num = Integer.parseInt(sc.nextLine());
 
         if (num == 1) {
+            System.out.println("고객 등급을 입력해주세요.");
+            System.out.println(CustomerGradeEnum.getGradeDisplayText());
+
+            num = Integer.parseInt(sc.nextLine());
+
+            // 범위 검증
+            if (num < 1 || num > CustomerGradeEnum.length)
+                throw new InvalidMenuInputException(num, 1, CustomerGradeEnum.length);
+
+            // TODO: 요구사항에 customer 의 grade 를 선택하게 한다?? - 질문하기
+            CustomerGradeEnum customerGradeEnum = CustomerGradeEnum.fromIdx(num-1);
+            customer.setGrade(customerGradeEnum);
+
+            int totalPrice = cart.getTotalPrice();
+//            String grade = customer.getGrade().getGrade();
+//            int discountRate = customer.getGrade().getDiscountRate();
+            String grade = customerGradeEnum.getGrade();
+            int discountRate = customerGradeEnum.getDiscountRate();
+            int discountPrice = totalPrice * discountRate/100;
+            int newTotalPrice = totalPrice - discountPrice;
+
             if (!cart.isAllInStock()) {
                 System.out.println("재고가 부족한 상품이 존재합니다");
                 return;
             }
-            System.out.println("주문이 완료되었습니다! 총 금액: " + String.format("%,d", cart.getTotalPrice()) + "원");
+
+            System.out.println("주문이 완료되었습니다!");
+            System.out.printf("할인 전 금액: %,d원\n", totalPrice);
+            System.out.printf("%s 등급 할인(%d%%): -%,d원\n", grade, discountRate, discountPrice);
+            System.out.printf("최종 결제 금액: %,d원\n", newTotalPrice);
             cart.buy();
             System.out.println("\n\n");
         } else if (num != 2) {

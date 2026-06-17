@@ -2,6 +2,7 @@ package com.mosparta.commerce;
 
 import com.mosparta.commerce.domain.Cart;
 import com.mosparta.commerce.domain.Category;
+import com.mosparta.commerce.domain.Customer;
 import com.mosparta.commerce.domain.Product;
 
 import java.util.ArrayList;
@@ -18,17 +19,22 @@ public class Main {
         Category elecCategory = new Category("전자제품", elecProducts);
 
         List<Product> clothesProducts = new ArrayList<>();
-        // TODO: 상품 추가
-        Category clothesCategory = new Category("의류", clothesProducts);
+        Category clothesCategory = new Category("의류", clothesProducts); // TODO: 상품 추가
 
         List<Product> foodProducts = new ArrayList<>();
-        // TODO: 상품 추가
-        Category foodCategory = new Category("식품", foodProducts);
+        Category foodCategory = new Category("식품", foodProducts); // TODO: 상품 추가
+
+        // Cart 생성
+        Cart cart = new Cart();
+
+        // Customer 생성
+        Customer customer = new Customer("tester1", "test@example.com");
 
         // cli 프로그램 시작
         CommerceSystem commerceSystem = new CommerceSystem(
                 List.of(elecCategory, clothesCategory, foodCategory),
-                new Cart()
+                cart,
+                customer
         );
         commerceSystem.start();
     }
