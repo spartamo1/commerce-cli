@@ -14,13 +14,14 @@ public class CommerceSystem {
     private static final int ADMIN_MODE_NUM = 6;
 
     private final List<Category> categoryList;
-    private final Cart cart = new Cart();
+    private final Cart cart;
     private final Scanner sc = new Scanner(System.in);
     private final AdminModeHandler adminModeHandler;
 
-    public CommerceSystem(List<Category> categoryList) {
+    public CommerceSystem(List<Category> categoryList, Cart cart) {
         this.categoryList = categoryList;
-        this.adminModeHandler = new AdminModeHandler(sc, categoryList);
+        this.cart = cart;
+        this.adminModeHandler = new AdminModeHandler(sc, categoryList, cart);
     }
 
     /**

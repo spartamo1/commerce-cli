@@ -1,5 +1,6 @@
 package com.mosparta.commerce;
 
+import com.mosparta.commerce.domain.Cart;
 import com.mosparta.commerce.domain.Category;
 import com.mosparta.commerce.domain.Product;
 
@@ -25,7 +26,10 @@ public class Main {
         Category foodCategory = new Category("식품", foodProducts);
 
         // cli 프로그램 시작
-        CommerceSystem commerceSystem = new CommerceSystem(List.of(elecCategory, clothesCategory, foodCategory));
+        CommerceSystem commerceSystem = new CommerceSystem(
+                List.of(elecCategory, clothesCategory, foodCategory),
+                new Cart()
+        );
         commerceSystem.start();
     }
 }

@@ -1,5 +1,6 @@
 package com.mosparta.commerce.handler;
 
+import com.mosparta.commerce.domain.Cart;
 import com.mosparta.commerce.domain.Category;
 import com.mosparta.commerce.domain.Product;
 import com.mosparta.commerce.exception.InvalidMenuInputException;
@@ -31,10 +32,12 @@ public class AdminModeHandler {
 
     private final Scanner sc;
     private final List<Category> categoryList;
+    private final Cart cart;
 
-    public AdminModeHandler(Scanner sc, List<Category> categoryList) {
+    public AdminModeHandler(Scanner sc, List<Category> categoryList, Cart cart) {
         this.sc = sc;
         this.categoryList = categoryList;
+        this.cart = cart;
     }
 
     public boolean login() {
@@ -213,8 +216,11 @@ public class AdminModeHandler {
         if (num < 1 || num > 2)
             throw new InvalidMenuInputException(num, 1, 2);
 
-        if (num == 1)
+        if (num == 1) {
             category.deleteProduct(product);
+            cart.deleteItem(product);
+            System.out.println("삭제되었습니다.");
+        }
     }
 
 }
