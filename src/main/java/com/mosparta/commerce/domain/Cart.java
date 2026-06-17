@@ -37,8 +37,19 @@ public class Cart {
         cartItems.clear();
     }
 
+    /**
+     * 삭제 v1. Product 객체가 동일(Product 클래스의 equals 메서드 참고)할 때만 삭제
+     */
     public void deleteItem(Product product) {
         cartItems.remove(product);
+    }
+
+    /**
+     * 삭제 v2. Product 의 이름만 같아도 삭제
+     */
+    public void deleteItemByName(String name) {
+        cartItems.entrySet()
+                .removeIf(item -> item.getKey().getName().equals(name));
     }
 
     @Override
