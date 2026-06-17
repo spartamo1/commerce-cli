@@ -7,6 +7,8 @@ import com.mosparta.commerce.domain.CustomerGradeEnum;
 import com.mosparta.commerce.domain.Product;
 import com.mosparta.commerce.exception.InvalidMenuInputException;
 import com.mosparta.commerce.handler.AdminModeHandler;
+import com.mosparta.commerce.handler.CartHandler;
+import com.mosparta.commerce.handler.OrderHandler;
 
 import java.util.List;
 import java.util.Scanner;
@@ -17,98 +19,21 @@ public class CommerceSystem {
 
     private final List<Category> categoryList;
     private final Cart cart;
-    private final AdminModeHandler adminModeHandler;
     private final Customer customer;
     private final Scanner sc = new Scanner(System.in);
+
+    private final AdminModeHandler adminModeHandler;
+    private final OrderHandler orderHandler;
+    private final CartHandler cartHandler;
 
     public CommerceSystem(List<Category> categoryList, Cart cart, Customer customer) {
         this.categoryList = categoryList;
         this.cart = cart;
-        this.adminModeHandler = new AdminModeHandler(sc, categoryList, cart);
         this.customer = customer;
-    }
 
-    /**
-     * 장바구니 추가 로직
-     */
-    private boolean handleCategoryView(Category category) {
-        printProductList(category);
-        int num = Integer.parseInt(sc.nextLine());
-
-        List<Product> products = category.getProducts();
-
-        int maxNum = products.size();
-        if (num < 0 || num > maxNum)
-            throw new InvalidMenuInputException(num, 0, maxNum);
-
-        if (num == 0)
-            return false;
-
-        Product selectedProduct = products.get(num-1);
-        System.out.print("선택한 상품: ");
-        System.out.println(selectedProduct + "\n");
-
-        System.out.println("위 상품을 장바구니에 추가하시겠습니까?\n1. 확인\t2.취소");
-        num = Integer.parseInt(sc.nextLine());
-
-        if (num == 2) return true;
-        if (num != 1) throw new InvalidMenuInputException(num, 1, 2);
-
-        cart.addOneProduct(selectedProduct);
-        System.out.println(selectedProduct.getName() + "가 장바구니에 추가되었습니다.");
-        return true;
-    }
-
-    /**
-     * 주문 로직
-     */
-    private void handleCartOrder() {
-        System.out.println(cart);
-        System.out.println("\n1. 주문 확정\t 2. 메인으로 돌아가기");
-
-        int num = Integer.parseInt(sc.nextLine());
-
-        if (num == 1) {
-            System.out.println("고객 등급을 입력해주세요.");
-            System.out.println(CustomerGradeEnum.getGradeDisplayText());
-
-            num = Integer.parseInt(sc.nextLine());
-
-            // 범위 검증
-            if (num < 1 || num > CustomerGradeEnum.length)
-                throw new InvalidMenuInputException(num, 1, CustomerGradeEnum.length);
-
-            // TODO: 요구사항에 customer 의 grade 를 선택하게 한다?? - 질문하기
-            CustomerGradeEnum customerGradeEnum = CustomerGradeEnum.fromIdx(num-1);
-            customer.setGrade(customerGradeEnum);
-
-            int totalPrice = cart.getTotalPrice();
-//            String grade = customer.getGrade().getGrade();
-//            int discountRate = customer.getGrade().getDiscountRate();
-            String grade = customerGradeEnum.getGrade();
-            int discountRate = customerGradeEnum.getDiscountRate();
-            int discountPrice = totalPrice * discountRate/100;
-            int newTotalPrice = totalPrice - discountPrice;
-
-            if (!cart.isAllInStock()) {
-                System.out.println("재고가 부족한 상품이 존재합니다");
-                return;
-            }
-
-            System.out.println("주문이 완료되었습니다!");
-            System.out.printf("할인 전 금액: %,d원\n", totalPrice);
-            System.out.printf("%s 등급 할인(%d%%): -%,d원\n", grade, discountRate, discountPrice);
-            System.out.printf("최종 결제 금액: %,d원\n", newTotalPrice);
-            cart.buy();
-            System.out.println("\n\n");
-        } else if (num != 2) {
-            throw new InvalidMenuInputException(num, 1, 2);
-        }
-    }
-
-    private void handleCancelOrder() {
-        cart.clear();
-        System.out.println("주문 취소되었습니다");
+        this.adminModeHandler = new AdminModeHandler(sc, categoryList, cart);
+        this.orderHandler = new OrderHandler(sc, cart, customer);
+        this.cartHandler = new CartHandler(sc, cart);
     }
 
     private void printCategories() {
@@ -155,12 +80,12 @@ public class CommerceSystem {
                     return;
 
                 if (num == categoryList.size()+1) {
-                    handleCartOrder();
+                    orderHandler.handleCartOrder();
                     continue;
                 }
 
                 if (num == categoryList.size()+2) {
-                    handleCancelOrder();
+                    orderHandler.handleCancelOrder();
                     continue;
                 }
 
@@ -170,7 +95,8 @@ public class CommerceSystem {
                 }
 
                 Category selectedCategory = categoryList.get(num-1);
-                if (!handleCategoryView(selectedCategory))
+                printProductList(selectedCategory);
+                if (!cartHandler.handleCart(selectedCategory))
                     return;
             } catch (InvalidMenuInputException | IllegalStateException | IllegalArgumentException e) {
                 if (e instanceof NumberFormatException)
