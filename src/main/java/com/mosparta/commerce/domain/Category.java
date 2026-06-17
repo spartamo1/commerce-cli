@@ -27,6 +27,11 @@ public class Category {
     }
 
     public void addProduct(Product product) {
+        List<String> productNames = products.stream().map(Product::getName).toList();
+
+        if (productNames.contains(product.getName()))
+            throw new IllegalArgumentException("이미 존재하는 상품명입니다");
+
         products.add(product);
     }
 

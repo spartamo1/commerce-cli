@@ -142,10 +142,11 @@ public class CommerceSystem {
                 Category selectedCategory = categoryList.get(num-1);
                 if (!handleCategoryView(selectedCategory))
                     return;
-            } catch (InvalidMenuInputException | IllegalStateException e) {
-                System.out.println(e.getMessage());
-            } catch (NumberFormatException e) {
-                System.out.println("숫자를 입력해주세요.");
+            } catch (InvalidMenuInputException | IllegalStateException | IllegalArgumentException e) {
+                if (e instanceof NumberFormatException)
+                    System.out.println("숫자를 입력해주세요 " + ((NumberFormatException) e).getMessage());
+                else
+                    System.out.println(e.getMessage());
             }
         }
     }
