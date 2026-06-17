@@ -37,6 +37,10 @@ public class Cart {
         cartItems.clear();
     }
 
+    public void deleteItem(Product product) {
+        cartItems.remove(product);
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("[ 장바구니 내역 ]\n");
