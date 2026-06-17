@@ -3,7 +3,6 @@ package com.mosparta.commerce;
 import com.mosparta.commerce.domain.Cart;
 import com.mosparta.commerce.domain.Category;
 import com.mosparta.commerce.domain.Customer;
-import com.mosparta.commerce.domain.CustomerGradeEnum;
 import com.mosparta.commerce.domain.Product;
 import com.mosparta.commerce.exception.InvalidMenuInputException;
 import com.mosparta.commerce.handler.AdminModeHandler;
@@ -100,7 +99,7 @@ public class CommerceSystem {
                     return;
             } catch (InvalidMenuInputException | IllegalStateException | IllegalArgumentException e) {
                 if (e instanceof NumberFormatException)
-                    System.out.println("숫자를 입력해주세요 " + ((NumberFormatException) e).getMessage());
+                    System.out.println("숫자를 입력해주세요 " + e.getMessage());
                 else
                     System.out.println(e.getMessage());
             }

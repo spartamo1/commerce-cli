@@ -57,9 +57,7 @@ public class Cart {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("[ 장바구니 내역 ]\n");
-        cartItems.forEach((key, val) -> {
-            sb.append(key.toSummaryString()).append(" | 수량: ").append(val).append("개\n");
-        });
+        cartItems.forEach((key, val) -> sb.append(key.toSummaryString()).append(" | 수량: ").append(val).append("개\n"));
         sb.append("[ 총 주문 금액 ]\n").append(String.format("%,d", getTotalPrice()));
 
         return sb.toString();
