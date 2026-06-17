@@ -12,23 +12,24 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-enum ProductActionEnum {
-    ADD("추가"),
-    MODIFY("수정"),
-    DELETE("삭제");
-
-    private final String key;
-
-    ProductActionEnum(String key) {
-        this.key = key;
-    }
-
-    public String getKey() {
-        return key;
-    }
-}
-
 public class AdminModeHandler {
+
+    private enum ProductActionEnum {
+        ADD("추가"),
+        MODIFY("수정"),
+        DELETE("삭제");
+
+        private final String key;
+
+        ProductActionEnum(String key) {
+            this.key = key;
+        }
+
+        public String getKey() {
+            return key;
+        }
+    }
+
 
     private final Scanner sc;
     private final List<Category> categoryList;

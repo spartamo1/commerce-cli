@@ -1,5 +1,6 @@
 package com.mosparta.commerce.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -9,7 +10,7 @@ public class Category {
 
     public Category(String name, List<Product> products) {
         this.name = name;
-        this.products = products;
+        this.products = new ArrayList<>(products);
     }
 
     public String getName() {
