@@ -27,6 +27,17 @@ public class Category {
                 .findFirst();
     }
 
+    public List<Product> findProductsByPrice(Integer minPrice, Integer maxPrice) {
+        return products.stream()
+                .filter(product -> {
+                    Integer price = product.getPrice();
+                    if (price > minPrice && price < maxPrice)
+                        return true;
+                    return false;
+                })
+                .toList();
+    }
+
     public void addProduct(Product product) {
         List<String> productNames = products.stream().map(Product::getName).toList();
 
