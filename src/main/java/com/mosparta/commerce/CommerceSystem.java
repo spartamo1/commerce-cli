@@ -7,7 +7,6 @@ import com.mosparta.commerce.exception.InvalidMenuInputException;
 import com.mosparta.commerce.handler.AdminModeHandler;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.Scanner;
 
 public class CommerceSystem {
