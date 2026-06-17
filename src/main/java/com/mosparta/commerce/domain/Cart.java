@@ -44,13 +44,15 @@ public class Cart {
         cartItems.remove(product);
     }
 
-    /**
-     * 삭제 v2. Product 의 이름만 같아도 삭제
-     */
-    public void deleteItemByName(String name) {
-        cartItems.entrySet()
-                .removeIf(item -> item.getKey().getName().equals(name));
-    }
+//    데이터 정합성 문제 때문에 Product equals 에서 name 만 비교하도록 수정함.
+//    그럼 결국 위의 deleteItem (삭제 v1) 과 동일해짐. 아래코드는 의미가 없음.
+//    /**
+//     * 삭제 v2. Product 의 이름만 같아도 삭제
+//     */
+//    public void deleteItemByName(String name) {
+//        cartItems.entrySet()
+//                .removeIf(item -> item.getKey().getName().equals(name));
+//    }
 
     @Override
     public String toString() {

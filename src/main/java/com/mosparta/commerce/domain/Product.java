@@ -69,11 +69,11 @@ public class Product {
     @Override
     public boolean equals(Object o) {
         if (!(o instanceof Product product)) return false;
-        return name.equals(product.name) && price.equals(product.price) && description.equals(product.description);
+        return name.equals(product.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, price, description);
+        return Objects.hash(name);
     }
 }
