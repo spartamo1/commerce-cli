@@ -47,7 +47,7 @@ public class Product {
         return count <= stock;
     }
 
-    public void buy(Integer count) {
+    public void minusStock(Integer count) {
         if (count > stock) {
             throw new IllegalStateException("재고가 부족합니다.");
         }

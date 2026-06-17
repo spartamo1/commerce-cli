@@ -29,7 +29,7 @@ public class Cart {
     }
 
     public void buy() {
-        cartItems.forEach(Product::buy);
+        cartItems.forEach(Product::minusStock);
         cartItems.clear();
     }
 
