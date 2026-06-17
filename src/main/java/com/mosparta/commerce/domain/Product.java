@@ -4,8 +4,8 @@ import java.util.Objects;
 
 public class Product {
     private final String name;
-    private final Integer price;
-    private final String description;
+    private Integer price;
+    private String description;
     private Integer stock;
 
     public Product(String name, Integer price, String description, Integer stock) {
@@ -29,6 +29,18 @@ public class Product {
 
     public Integer getStock() {
         return stock;
+    }
+
+    public void setPrice(Integer price) {
+        this.price = price;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setStock(Integer stock) {
+        this.stock = stock;
     }
 
     public boolean isInStock(Integer count) {
