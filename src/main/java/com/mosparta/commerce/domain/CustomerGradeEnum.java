@@ -8,18 +8,16 @@ public enum CustomerGradeEnum {
 
     private final String grade;
     private final Integer discountRate;
-    private static final CustomerGradeEnum[] values;
-    public static final int length;
+    private static final CustomerGradeEnum[] VALUES;
     private static final String GRADE_DISPLAY_TEXT; // 외부에서 출력하기 좋은 정돈된 텍스트
 
     static {
-        values = CustomerGradeEnum.values();
-        length = values.length;
+        VALUES = CustomerGradeEnum.values();
 
         StringBuilder sb = new StringBuilder();
 
         int idx = 0;
-        for (CustomerGradeEnum gradeEnum : values) {
+        for (CustomerGradeEnum gradeEnum : VALUES) {
             idx++;
             sb.append(String.format("%d. %-8s : %2d%% 할인\n", idx, gradeEnum.grade, gradeEnum.discountRate));
         }
@@ -32,8 +30,8 @@ public enum CustomerGradeEnum {
         this.discountRate = discountRate;
     }
 
-    public String getGrade() {
-        return grade;
+    public static int size() {
+        return VALUES.length;
     }
 
     public Integer getDiscountRate() {
@@ -45,7 +43,7 @@ public enum CustomerGradeEnum {
     }
 
     public static CustomerGradeEnum fromIdx(int idx) {
-        return values[idx];
+        return VALUES[idx];
     }
 
 }

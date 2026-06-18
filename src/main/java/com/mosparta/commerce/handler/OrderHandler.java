@@ -35,8 +35,8 @@ public class OrderHandler {
             num = Integer.parseInt(sc.nextLine());
 
             // 범위 검증
-            if (num < 1 || num > CustomerGradeEnum.length)
-                throw new InvalidMenuInputException(num, 1, CustomerGradeEnum.length);
+            if (num < 1 || num > CustomerGradeEnum.size())
+                throw new InvalidMenuInputException(num, 1, CustomerGradeEnum.size());
 
             // TODO: 요구사항에 customer 의 grade 를 선택하게 한다?? - 질문하기
             CustomerGradeEnum customerGradeEnum = CustomerGradeEnum.fromIdx(num-1);
