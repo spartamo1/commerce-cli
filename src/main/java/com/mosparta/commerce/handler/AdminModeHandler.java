@@ -73,25 +73,23 @@ public class AdminModeHandler {
             );
 
             int num = Integer.parseInt(sc.nextLine());
-            if (num < 0 || num > 4)
-                throw new InvalidMenuInputException(num, 0, 4);
 
-            if (num == 0)
-                return;
-
-            if (num == 1) {
-                addProduct();
-            } else if (num == 2) {
-                modifyProduct();
-            } else if (num == 3) {
-                deleteProduct();
-            } else {
-                // 전체 상품 현황
-                for (Category category : categoryList) {
-                    System.out.println("[ " + category.getName() + " ]");
-                    category.getProducts().forEach(System.out::println);
-                    System.out.println(); // for 가독성
+            switch (num) {
+                case 0 -> {
+                    return;
                 }
+                case 1 -> addProduct();
+                case 2 -> modifyProduct();
+                case 3 -> deleteProduct();
+                case 4 -> {
+                    // 전체 상품 현황
+                    for (Category category : categoryList) {
+                        System.out.println("[ " + category.getName() + " ]");
+                        category.getProducts().forEach(System.out::println);
+                        System.out.println(); // for 가독성
+                    }
+                }
+                default -> throw new InvalidMenuInputException(num, 0, 4);
             }
         }
     }
@@ -111,20 +109,20 @@ public class AdminModeHandler {
         return selectedCategory;
     }
 
-    private Product selectProduct(ProductActionEnum action, Category selectedCategory) {
+    private Optional<Product> selectProduct(ProductActionEnum action, Category selectedCategory) {
         System.out.print(action.getKey() + "할 상품명을 입력해주세요: ");
         String name = sc.nextLine();
 
         Optional<Product> optionalProduct = selectedCategory.findProductByName(name);
         if (optionalProduct.isEmpty()) {
             System.out.println("해당 상품이 없습니다");
-            return null;
+            return Optional.empty();
         }
 
         Product selectedProduct = optionalProduct.orElseThrow();
         System.out.println("현재 상품 정보: " + selectedProduct);
 
-        return selectedProduct;
+        return Optional.of(selectedProduct);
     }
 
     private void addProduct() {
@@ -156,9 +154,11 @@ public class AdminModeHandler {
 
     private void modifyProduct() {
         Category category = selectCategory(ProductActionEnum.MODIFY);
-        Product product = selectProduct(ProductActionEnum.MODIFY, category);
-        if (product == null)
+        Optional<Product> optionalProduct = selectProduct(ProductActionEnum.MODIFY, category);
+        if (optionalProduct.isEmpty())
             return;
+
+        Product product = optionalProduct.get();
 
         System.out.println("수정할 항목을 선택해주세요:\n" +
                 "1. 가격\n" +
@@ -166,15 +166,12 @@ public class AdminModeHandler {
                 "3. 재고수량");
 
         int num = Integer.parseInt(sc.nextLine());
-        if (num < 1 || num > 3)
-            throw new InvalidMenuInputException(num, 1, 3);
 
-        if (num == 1) {
-            modifyProductValue("가격", product.getName(), product::getPrice, product::setPrice, Integer::parseInt);
-        } else if (num == 2) {
-            modifyProductValue("설명", product.getName(), product::getDescription, product::setDescription, v->v);
-        } else {
-            modifyProductValue("재고수량", product.getName(), product::getStock, product::setStock, Integer::parseInt);
+        switch (num) {
+            case 1 -> modifyProductValue("가격", product.getName(), product::getPrice, product::setPrice, Integer::parseInt);
+            case 2 -> modifyProductValue("설명", product.getName(), product::getDescription, product::setDescription, v->v);
+            case 3 -> modifyProductValue("재고수량", product.getName(), product::getStock, product::setStock, Integer::parseInt);
+            default -> throw new InvalidMenuInputException(num, 1, 3);
         }
     }
 
@@ -206,9 +203,11 @@ public class AdminModeHandler {
 
     private void deleteProduct() {
         Category category = selectCategory(ProductActionEnum.DELETE);
-        Product product = selectProduct(ProductActionEnum.DELETE, category);
-        if (product == null)
+        Optional<Product> optionalProduct = selectProduct(ProductActionEnum.DELETE, category);
+        if (optionalProduct.isEmpty())
             return;
+
+        Product product = optionalProduct.get();
 
         System.out.println("위 정보로 상품을 삭제하시겠습니까?");
         System.out.println("1. 확인\t 2. 취소");
