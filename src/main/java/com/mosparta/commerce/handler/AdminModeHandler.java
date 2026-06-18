@@ -160,10 +160,14 @@ public class AdminModeHandler {
 
         Product product = optionalProduct.get();
 
-        System.out.println("수정할 항목을 선택해주세요:\n" +
-                "1. 가격\n" +
-                "2. 설명\n" +
-                "3. 재고수량");
+        System.out.println(
+                """
+                수정할 항목을 선택해주세요:
+                1. 가격
+                2. 설명
+                3. 재고수량
+                """
+        );
 
         int num = Integer.parseInt(sc.nextLine());
 

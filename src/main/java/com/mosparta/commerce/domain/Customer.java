@@ -1,8 +1,8 @@
 package com.mosparta.commerce.domain;
 
 public class Customer {
-    private String name;
-    private String email;
+    private final String name;
+    private final String email;
     private CustomerGradeEnum grade;
 
     public Customer(String name, String email) {
@@ -28,9 +28,9 @@ public class Customer {
 
         return String.format(
                 """
-                할인 전 금액: %,d원\n
-                %s 등급 할인(%d%%): -%,d원\n
-                최종 결제 금액: %,d원\n
+                할인 전 금액: %,d원
+                %s 등급 할인(%d%%): -%,d원
+                최종 결제 금액: %,d원
                 """,
                 totalPrice,
                 grade, newPrice.discountRate, newPrice.discountPrice,

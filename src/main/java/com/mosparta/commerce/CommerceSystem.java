@@ -18,7 +18,6 @@ public class CommerceSystem {
 
     private final List<Category> categoryList;
     private final Cart cart;
-    private final Customer customer;
     private final Scanner sc = new Scanner(System.in);
 
     private final AdminModeHandler adminModeHandler;
@@ -28,7 +27,6 @@ public class CommerceSystem {
     public CommerceSystem(List<Category> categoryList, Cart cart, Customer customer) {
         this.categoryList = categoryList;
         this.cart = cart;
-        this.customer = customer;
 
         this.adminModeHandler = new AdminModeHandler(sc, categoryList, cart);
         this.orderHandler = new OrderHandler(sc, cart, customer);
