@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Cart {
+    // Map<상품, 갯수>
     private final Map<Product, Integer> cartItems = new HashMap<>();
 
     /**
