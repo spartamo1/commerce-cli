@@ -43,24 +43,14 @@ public class OrderHandler {
             customer.setGrade(customerGradeEnum);
 
             int totalPrice = cart.getTotalPrice();
-//            String grade = customer.getGrade().getGrade();
-//            int discountRate = customer.getGrade().getDiscountRate();
-            String grade = customerGradeEnum.getGrade();
-            int discountRate = customerGradeEnum.getDiscountRate();
-            int discountPrice = totalPrice * discountRate/100;
-            int newTotalPrice = totalPrice - discountPrice;
-
             if (!cart.isAllInStock()) {
                 System.out.println("재고가 부족한 상품이 존재합니다");
                 return;
             }
 
             System.out.println("주문이 완료되었습니다!");
-            System.out.printf("할인 전 금액: %,d원\n", totalPrice);
-            System.out.printf("%s 등급 할인(%d%%): -%,d원\n", grade, discountRate, discountPrice);
-            System.out.printf("최종 결제 금액: %,d원\n", newTotalPrice);
+            System.out.println(customer.receiptFormat(totalPrice));
             cart.buy();
-            System.out.println("\n\n");
         } else if (num != 2) {
             throw new InvalidMenuInputException(num, 1, 2);
         }
